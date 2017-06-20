@@ -182,11 +182,11 @@ void tree_finalize (tree_t &tree, int *nodeToNodeRow, int *elemToNode, int *intf
     if (tree.left == nullptr && tree.right == nullptr) {
 
         // Get the first and last edges of the leaf
-        tree.firstEdge = nodeToNodeRow[tree.firstNode];
-        tree.lastEdge  = nodeToNodeRow[tree.lastNode+1] - 1;
+        //tree.firstEdge = 0;//nodeToNodeRow[tree.firstNode];
+        //tree.lastEdge  = 0;//nodeToNodeRow[tree.lastNode+1] - 1;
 
         #ifdef STATS
-            bool hasIntfNode = has_intf_node (tree, intfIndex, intfNodes, nbIntf);
+            bool hasIntfNode = false;//has_intf_node (tree, intfIndex, intfNodes, nbIntf);
             fill_dc_file_leaves (tree, dcFile, curNode, curLevel, LRS, hasIntfNode);
             count_intf_stats (hasIntfNode);
         #endif
@@ -202,7 +202,7 @@ void tree_finalize (tree_t &tree, int *nodeToNodeRow, int *elemToNode, int *intf
     }
     else {
         #ifdef STATS
-            bool hasIntfNode = has_intf_node (tree, intfIndex, intfNodes, nbIntf);
+            bool hasIntfNode = false;//has_intf_node (tree, intfIndex, intfNodes, nbIntf);
             fill_dc_file_nodes (tree, dcFile, curNode, curLevel, hasIntfNode);
         #endif
 

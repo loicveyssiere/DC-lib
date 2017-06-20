@@ -262,7 +262,10 @@ void fill_dc_file_leaves (tree_t &tree, ofstream &dcFile, int curNode, int curLe
 {
 	dcFile << "\t" << curNode << " [label=\"" << curNode << "\\n["
 		   << tree.firstElem << "," << tree.lastElem << "]\\n["
-		   << tree.firstNode << "," << tree.lastNode << "]\"";
+		   << tree.firstNode << "," << tree.lastNode
+           << "]\\n[" << tree.firstInnerNode << "," << tree.lastInnerNode
+           << "]\\n[" << tree.lastElem-tree.firstElem+1 << " - " << tree.lastInnerNode-tree.firstInnerNode+1
+           << "]\"";
 
 	if      (LRS == 1) dcFile << ", color=turquoise4];\n";
 	else if (LRS == 2) dcFile << ", color=lightskyblue];\n";

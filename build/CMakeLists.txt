@@ -71,6 +71,7 @@ set (CMAKE_CXX_FLAGS "${flags} -std=c++11")
 # Headers
 include_directories (../include)
 include_directories (../src/headers)
+include_directories (../src2/headers)
 if (${DISTRI} STREQUAL "XMPI")
     include_directories (${MPI_INCLUDE_PATH})
 elseif (${DISTRI} STREQUAL "GASPI")
@@ -81,7 +82,7 @@ if (${TREE})
 endif (${TREE})
 
 # Sources
-file (GLOB_RECURSE source_list ../src/* ../include/*)
+file (GLOB_RECURSE source_list ../src*/* ../include/*)
 
 # Library
 set (lib DC)

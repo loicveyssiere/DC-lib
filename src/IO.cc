@@ -38,6 +38,8 @@ void recursive_reading (tree_t &tree, ifstream &treeFile, int nbIntf)
     treeFile.read ((char*)&tree.lastSep,   sizeof (int));
     treeFile.read ((char*)&tree.firstNode, sizeof (int));
     treeFile.read ((char*)&tree.lastNode,  sizeof (int));
+    treeFile.read ((char*)&tree.firstInnerNode, sizeof (int));
+    treeFile.read ((char*)&tree.lastInnerNode,  sizeof (int));
     treeFile.read ((char*)&tree.firstEdge, sizeof (int));
     treeFile.read ((char*)&tree.lastEdge,  sizeof (int));
     treeFile.read ((char*)&tree.vecOffset, sizeof (int));
@@ -107,6 +109,8 @@ void recursive_storing (tree_t &tree, ofstream &treeFile, int nbIntf)
     treeFile.write ((char*)&tree.lastSep,     sizeof (int));
     treeFile.write ((char*)&tree.firstNode,   sizeof (int));
     treeFile.write ((char*)&tree.lastNode,    sizeof (int));
+    treeFile.write ((char*)&tree.firstInnerNode,   sizeof (int));
+    treeFile.write ((char*)&tree.lastInnerNode,    sizeof (int));
     treeFile.write ((char*)&tree.firstEdge,   sizeof (int));
     treeFile.write ((char*)&tree.lastEdge,    sizeof (int));
     treeFile.write ((char*)&tree.vecOffset,   sizeof (int));
@@ -154,5 +158,5 @@ void DC_store_tree (string &treePath, int nbElem, int nbNodes, int nbIntf,
     recursive_storing (*treeHead, treeFile, nbIntf);
     treeFile.close ();
 
-    delete[] nodePerm, delete[] elemPerm; 
+    delete[] nodePerm, delete[] elemPerm;
 }

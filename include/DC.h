@@ -21,7 +21,33 @@
 #include <string>
 
 #define MAX_ELEM_NEIGHBORS 250
-#define MAX_ELEM_PER_PART 200
+#define MAX_ELEM_PER_PART 4000
+
+#define DC_SUM      0
+#define DC_MIN      1
+#define DC_MAX      2
+#define DC_PROD     3
+#define DC_LAND     4
+#define DC_LOR      5
+#define DC_BAND     6
+#define DC_BOR      7
+
+#define DC_INT      0
+#define DC_DOUBLE   1
+
+struct DCreturnArgs_t {
+    double *val;
+    int size;
+    int op;
+    DCreturnArgs_t(int size_, int op_) {
+        val = new double[size_]();
+        size = size_;
+        op = op_;
+    }
+    ~DCreturnArgs_t() {
+        delete[] val;
+    }
+};
 
 // D&C tree structure
 typedef struct tree_s {
@@ -29,6 +55,7 @@ typedef struct tree_s {
     int nbOwnedNodes, nbIntfNodes,
         firstElem, lastElem, lastSep,
         firstNode, lastNode,
+        firstInnerNode, lastInnerNode,
         firstEdge, lastEdge,
         vecOffset;
     bool isSep;
@@ -43,6 +70,7 @@ typedef struct DCargs_s {
     #endif
     int firstElem, lastElem,
         firstNode, lastNode,
+        firstInnerNode, lastInnerNode,
         firstEdge, lastEdge,
         isSep;
 } DCargs_t;
@@ -104,6 +132,11 @@ void DC_tree_traversal (void (*userSeqFct)  (void *, DCargs_t *),
                         void (*userCommFct) (void *, DCcommArgs_t *),
                         void *userArgs, void *userCommArgs);
 
+void DC_alt_tree_traversal (void (*userSeqFct)  (void *, DCargs_t *, DCreturnArgs_t *),
+                        void (*userVecFct)  (void *, DCargs_t *),
+                        void (*userCommFct) (void *, DCcommArgs_t *),
+                        void *userArgs, void *userCommArgs, DCreturnArgs_t *returnArgs);
+
 // Create element to element array from element to node and node to element
 // Two elements are neighbors if they share a node
 void DC_create_elemToElem (list_t *elemToElem, index_t &nodeToElem, int *elemToNode,
@@ -144,5 +177,18 @@ void DC_finalize_tree (int *nodeToNodeRow, int *elemToNode, int *intfIndex,
 
 // Create the D&C tree and the permutations
 void DC_create_tree (int *elemToNode, int nbElem, int dimElem, int nbNodes);
+
+/* =============================================================================
+    ADD-ON
+============================================================================= */
+#define MAX_NODE_PER_PART 100
+
+void DC_alt_create_tree(int *componentToNode, int nbComponent, int dimComponent, int nbNodes);
+
+void DC_alt_permute_double_2d_array (double *tab, int *perm, int nbItem, int dimItem, int offset);
+
+/* =============================================================================
+    END ADD-ON
+============================================================================= */
 
 #endif
