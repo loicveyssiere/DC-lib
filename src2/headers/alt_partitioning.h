@@ -12,7 +12,7 @@ void compute_innerNodePartition(int *componentToNode, int *nodePart,
 
 void alt_sep_partitioning (tree_t &tree, int *elemToNode, int *oldBijection, int globalNbElem, int dimElem,
                        int firstSepElem, int lastSepElem, int firstNode, int lastNode,
-                       int firstInnerNode, int lastInnerNode, int curNode, long depth);
+                       int firstInnerNode, int lastInnerNode, int curNode, int depth);
 
 int alt_create_sepToNode (int *sepToNode, int *elemToNode, int *oldBijection, int **nodeBijection, int firstSepElem, int lastSepElem, int dimElem, int *nbSepNodes);
 

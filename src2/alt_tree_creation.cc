@@ -64,8 +64,6 @@ void DC_alt_create_tree(int *componentToNode, int nbComponent, int dimComponent,
     innerNodePerm = new int[nbNodes];
     int *nodeIndex = new int[nbNodes];
 
-     printf("Number of workers: %d",  __cilkrts_get_nworkers());
-
     #ifdef MULTITHREADED_COMM
         // Initialize the node owner array
         init_node_owner (nbNodes);
@@ -477,7 +475,7 @@ void select_partition ( int *elemPart, int *innerNodePart, int *nodePart, int *e
 
 void alt_init_dc_tree (tree_t &tree, int firstElem, int lastElem, int nbSepElem,
                    int firstNode, int lastNode, int firstInnerNode,
-                   int lastInnerNode, int nbSepInnerNodes, bool isSep, bool isLeaf) {
+                   int lastInnerNode, int nbSepInnerNodes, bool isSep, bool isLeaf, int depth) {
     tree.ownedNodes   = nullptr;
     tree.intfIndex    = nullptr;
     tree.intfNodes    = nullptr;
@@ -495,6 +493,8 @@ void alt_init_dc_tree (tree_t &tree, int firstElem, int lastElem, int nbSepElem,
     tree.lastEdge     = -1;
     tree.vecOffset    = 0;
     tree.isSep        = isSep;
+    tree.isLeaf       = isLeaf;
+    tree.depth        = depth;
     tree.left         = nullptr;
     tree.right        = nullptr;
     tree.sep          = nullptr;
@@ -514,7 +514,7 @@ void alt_tree_creation (tree_t &tree, int *elemToNode, int *sepToNode, int *node
                     int *nodePartSize, int *nodeIndex, int *sepIndex, int globalNbElem, int dimElem, int firstPart,
                     int lastPart, int firstElem, int lastElem, int firstNode,
                     int lastNode, int firstInnerNode, int lastInnerNode,
-                    int sepOffset, int sepNodeOffset, int curNode, bool isSep, long depth) {
+                    int sepOffset, int sepNodeOffset, int curNode, bool isSep, int depth) {
 
     printf("Enter in tree_creation ... %d - %d // %d - %d and depth: %ld\n", firstElem, lastElem, firstInnerNode, lastInnerNode, depth);
     //assert(sepOffset == firstElem);
@@ -535,7 +535,7 @@ void alt_tree_creation (tree_t &tree, int *elemToNode, int *sepToNode, int *node
         #endif
 
         // Initialize the leaf
-        alt_init_dc_tree (tree, firstElem, lastElem, 0, firstNode, lastNode, firstInnerNode, lastInnerNode, 0, isSep, true);
+        alt_init_dc_tree (tree, firstElem, lastElem, 0, firstNode, lastNode, firstInnerNode, lastInnerNode, 0, isSep, true, depth);
 
         // End of recursion
         return;
@@ -604,7 +604,7 @@ void alt_tree_creation (tree_t &tree, int *elemToNode, int *sepToNode, int *node
 
     // Initialize current node
     alt_init_dc_tree (tree, firstElem, lastElem, nbSepElem, firstNode, lastNode, firstInnerNode, lastInnerNode, nbSepInnerNodes, isSep,
-                  false);
+                  false, depth);
 
     // Left & right recursion
     #ifdef OMP
@@ -616,7 +616,7 @@ void alt_tree_creation (tree_t &tree, int *elemToNode, int *sepToNode, int *node
                    globalNbElem, dimElem, separator+1, lastPart, firstElem+nbLeftElem,
                    lastElem-nbSepElem, firstNode+nbLeftNodes, lastNode,
                    firstInnerNode+nbLeftInnerNodes, lastInnerNode-nbSepInnerNodes,
-                   sepOffset+nbLeftElem, sepNodeOffset+nbLeftInnerNodes, 3*curNode+2, isSep, depth*10+1);
+                   sepOffset+nbLeftElem, sepNodeOffset+nbLeftInnerNodes, 3*curNode+2, isSep, depth+1);
     #ifdef OMP
         #pragma omp task default(shared)
     #endif
@@ -624,7 +624,7 @@ void alt_tree_creation (tree_t &tree, int *elemToNode, int *sepToNode, int *node
                    globalNbElem, dimElem, firstPart, separator, firstElem, firstElem+
                    nbLeftElem-1, firstNode, lastNode-nbRightNodes,
                    firstInnerNode, firstInnerNode+nbLeftInnerNodes-1, sepOffset, sepNodeOffset,
-                   3*curNode+1, isSep, depth*10+2);
+                   3*curNode+1, isSep, depth+1);
 
     // Synchronization
     #ifdef OMP

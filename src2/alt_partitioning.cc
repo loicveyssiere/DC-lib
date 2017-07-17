@@ -246,7 +246,7 @@ int alt_create_sepToNode3 (int *sepToNode, int *elemToNode, int firstSepElem,
 
 void alt_sep_partitioning (tree_t &tree, int *elemToNode, int *nodeIndex, int globalNbElem, int dimElem,
                        int firstSepElem, int lastSepElem, int firstNode, int lastNode,
-                       int firstInnerNode, int lastInnerNode, int curNode, long depth) {
+                       int firstInnerNode, int lastInnerNode, int curNode, int depth) {
 
 
     // If there is not enough element in the separator
@@ -265,7 +265,7 @@ void alt_sep_partitioning (tree_t &tree, int *elemToNode, int *nodeIndex, int gl
 
        // Initialize the leaf
        alt_init_dc_tree (tree, firstSepElem, lastSepElem, 0, firstNode, lastNode, firstInnerNode, lastInnerNode, 0, true,
-                     true);
+                     true, depth);
 
        // End of recursion
        return;
@@ -291,7 +291,7 @@ void alt_sep_partitioning (tree_t &tree, int *elemToNode, int *nodeIndex, int gl
     // Create the separator D&C tree
     alt_tree_creation (tree, elemToNode, sepToNode, nodePart, nullptr, nodeIndex, sepIndex, globalNbElem,
                    dimElem, 0, nbSepPart-1, firstSepElem, lastSepElem, firstNode,
-                   lastNode, firstInnerNode, lastInnerNode, 0, 0, curNode, true, depth*10+3);
+                   lastNode, firstInnerNode, lastInnerNode, 0, 0, curNode, true, depth+1);
 
     delete[] nodePart, delete[] sepToNode;
 }

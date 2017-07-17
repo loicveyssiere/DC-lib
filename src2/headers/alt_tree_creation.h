@@ -7,7 +7,7 @@ void alt_tree_creation (tree_t &tree, int *elemToNode, int *sepToNode, int *node
                     int *nodePartSize, int *nodeIndex, int *sepIndex, int globalNbElem, int dimElem, int firstPart,
                     int lastPart, int firstElem, int lastElem, int firstNode,
                     int lastNode, int firstInnerNode, int lastInnerNode,
-                    int sepOffset, int sepNodeOffset, int curNode, bool isSep, long depth);
+                    int sepOffset, int sepNodeOffset, int curNode, bool isSep, int depth);
 
 void alt_create_elem_part (int *elemPart, int *nodePart, int *elemToNode, int nbElem,
                        int dimElem, int separator, int offset, int *nbLeftElem,
@@ -25,7 +25,7 @@ void alt_create_elem_part3 (int *elemPart, int *nodePart, int *innerNodePart,
 
 void alt_init_dc_tree (tree_t &tree, int firstElem, int lastElem, int nbSepElem,
                  int firstNode, int lastNode, int firstInnerNode,
-                 int lastInnerNode, int nbSepInnerNodes, bool isSep, bool isLeaf);
+                 int lastInnerNode, int nbSepInnerNodes, bool isSep, bool isLeaf, int depth);
 
 void init_intervals (tree_t &tree,
                       int firstElem, int lastElem,

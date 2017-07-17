@@ -7,6 +7,10 @@
 
 extern tree_t *treeHead;
 
+int DC_get_max_elem_per_part() {
+    return MAX_ELEM_PER_PART;
+}
+
 // Follow the D&C tree to execute the given function in parallel
 void alt_tree_traversal (void (*userSeqFct)  (void *, DCargs_t *, DCreturnArgs_t *),
                      void (*userVecFct)  (void *, DCargs_t *),
@@ -25,6 +29,8 @@ void alt_tree_traversal (void (*userSeqFct)  (void *, DCargs_t *, DCreturnArgs_t
         DCargs.lastInnerNode = tree.lastInnerNode;
         DCargs.lastEdge  = tree.lastEdge;
         DCargs.isSep     = tree.isSep;
+        DCargs.isLeaf     = tree.isLeaf;
+        DCargs.depth     = tree.depth;
         #ifdef MULTITHREADED_COMM
             DCargs.nbOwnedNodes = tree.nbOwnedNodes;
             DCargs.ownedNodes   = tree.ownedNodes;

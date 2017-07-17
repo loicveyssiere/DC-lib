@@ -21,7 +21,9 @@
 #include <string>
 
 #define MAX_ELEM_NEIGHBORS 250
+#ifndef MAX_ELEM_PER_PART
 #define MAX_ELEM_PER_PART 4000
+#endif // MAX_ELEM_PER_PART
 
 #define DC_SUM      0
 #define DC_MIN      1
@@ -58,7 +60,9 @@ typedef struct tree_s {
         firstInnerNode, lastInnerNode,
         firstEdge, lastEdge,
         vecOffset;
+    int depth;
     bool isSep;
+    bool isLeaf;
     struct tree_s *left, *right, *sep;
 } tree_t;
 
@@ -72,7 +76,7 @@ typedef struct DCargs_s {
         firstNode, lastNode,
         firstInnerNode, lastInnerNode,
         firstEdge, lastEdge,
-        isSep;
+        isSep, isLeaf, depth;
 } DCargs_t;
 
 // D&C arguments structure for multithreaded comm
@@ -186,6 +190,8 @@ void DC_create_tree (int *elemToNode, int nbElem, int dimElem, int nbNodes);
 void DC_alt_create_tree(int *componentToNode, int nbComponent, int dimComponent, int nbNodes);
 
 void DC_alt_permute_double_2d_array (double *tab, int *perm, int nbItem, int dimItem, int offset);
+
+int DC_get_max_elem_per_part();
 
 /* =============================================================================
     END ADD-ON

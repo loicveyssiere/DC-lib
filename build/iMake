@@ -43,6 +43,7 @@ DEBUG=0
 VERBOSE=0
 DISTRI=0
 SHARED=0
+MAX_ELEM_PER_PART=0
 
 for i in $@; do
     if [[ $i == "clean" ]]; then
@@ -55,6 +56,8 @@ for i in $@; do
               external_files.mod mod_qvddump.mod 2> /dev/null
         echo -e "\\033[1;32mBuild & lib directories have been cleaned up\\033[0;39m"
         exit
+    elif [[ $i =~ MAX_ELEM_PER_PART=* ]]; then
+        MAX_ELEM_PER_PART="${i#*=}"
     elif [[ $i == "bulk" ]]; then
         BULK=1
     elif [[ $i == "vec" ]] || [[ $i == "vecto" ]]; then
@@ -137,12 +140,12 @@ else
         cmake -DGASPI_INCLUDE=$GASPI_INCLUDE -DMETIS_INCLUDE=$METIS_INCLUDE \
               -DDISTRI=$DISTRI -DSHARED=$SHARED -DVECTO=$VECTO -DARCHI=$ARCHI \
               -DBULK=$BULK -DTREE=$TREE -DSTATS=$STATS -DDEBUG=$DEBUG \
-              -DVERBOSE=$VERBOSE \
+              -DVERBOSE=$VERBOSE -DMAX_ELEM_PER_PART=$MAX_ELEM_PER_PART \
               . -G "Unix Makefiles"
     else
         cmake -DGASPI_INCLUDE=$GASPI_INCLUDE -DDISTRI=$DISTRI -DSHARED=$SHARED \
               -DVECTO=$VECTO -DARCHI=$ARCHI -DBULK=$BULK -DTREE=$TREE -DSTATS=$STATS \
-              -DDEBUG=$DEBUG -DVERBOSE=$VERBOSE \
+              -DDEBUG=$DEBUG -DVERBOSE=$VERBOSE -DMAX_ELEM_PER_PART=$MAX_ELEM_PER_PART \
               . -G "Unix Makefiles"
     fi
 fi
