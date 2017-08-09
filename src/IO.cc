@@ -43,6 +43,7 @@ void recursive_reading (tree_t &tree, ifstream &treeFile, int nbIntf)
     treeFile.read ((char*)&tree.firstEdge, sizeof (int));
     treeFile.read ((char*)&tree.lastEdge,  sizeof (int));
     treeFile.read ((char*)&tree.vecOffset, sizeof (int));
+    treeFile.read ((char*)&tree.depth, sizeof (int));
     treeFile.read ((char*)&tree.isSep,     sizeof (bool));
     treeFile.read ((char*)&isLeaf,         sizeof (bool));
 
@@ -114,6 +115,7 @@ void recursive_storing (tree_t &tree, ofstream &treeFile, int nbIntf)
     treeFile.write ((char*)&tree.firstEdge,   sizeof (int));
     treeFile.write ((char*)&tree.lastEdge,    sizeof (int));
     treeFile.write ((char*)&tree.vecOffset,   sizeof (int));
+    treeFile.write ((char*)&tree.depth,   sizeof (int));
     treeFile.write ((char*)&tree.isSep,       sizeof (bool));
 
     if (tree.left == nullptr && tree.right == nullptr) {

@@ -1,3 +1,5 @@
+#ifdef TREE_CREATION
+
 #include <cstring>
 #include <cmath>
 #ifdef CILK
@@ -24,8 +26,6 @@ extern tree_t *treeHead;
 extern int *elemPerm, *nodePerm;
 int *innerNodePerm;
 int globalNbElem, globalNbNodes;
-
-#ifdef TREE_CREATION
 
 // Mutex to avoid race condition in merge permutations
 extern pthread_mutex_t mergeMutex;

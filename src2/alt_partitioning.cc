@@ -24,45 +24,6 @@ extern int globalNbElem, globalNbNodes;
 
 extern pthread_mutex_t metisMutex;
 
-/*
-void alt_partitioning(int *componentToNode, int nbComponent, int dimComponent, int nbNodes) {
-
-    int *nodePart   = new int [nbNodes];
-    int nbPart = ceil (nbNodes / (double) MAX_NODE_PER_PART);
-
-    compute_partition(componentToNode, nbComponent, dimComponent, nbNodes, nbPart, nodePart);
-
-    // Create node permutation from node partition
-    DC_create_permutation (nodePerm, nodePart, nbNodes, nbPart);
-
-    // Compute the number of nodes per partition
-    int *nodePartSize = new int [nbPart] ();
-    for (int i = 0; i < nbNodes; i++) {
-        nodePartSize[nodePart[i]]++;
-    }
-
-    // Initialize the global element permutation
-    #ifdef OMP
-        #pragma omp parallel for
-        for (int i = 0; i < nbComponent; i++) {
-    #elif CILK
-        cilk_for (int i = 0; i < nbComponent; i++) {
-    #endif
-        elemPerm[i] = i;
-    }
-
-    // Create D&C tree
-    #ifdef OMP
-        #pragma omp parallel
-        #pragma omp single nowait
-    #endif
-    tree_creation (*treeHead, componentToNode, nullptr, nodePart, nodePartSize, nbComponent,
-                   dimComponent, 0, nbPart-1, 0, nbComponent-1, 0, nbNodes-1, 0, 0, false);
-    delete[] nodePartSize, delete[] nodePart;
-
-}
-*/
-
 void compute_partition(int *componentToNode, int nbComponent, int dimComponent, int nbNodes, int nbPart, int *nodePart) {
 
     // Configure METIS & compute the node partitioning of the mesh

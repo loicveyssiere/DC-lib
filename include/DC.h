@@ -19,6 +19,7 @@
 
 #include <stdint.h>
 #include <string>
+#include <fstream>
 
 #define MAX_ELEM_NEIGHBORS 250
 #ifndef MAX_ELEM_PER_PART
@@ -122,6 +123,17 @@ class DC_timer
         // RDTSC
         uint64_t startCycles, avgCycles;
         int cyclesCtr;
+};
+
+class Tree_topo {
+public:
+    Tree_topo(std::string stats_file, int n_extra);
+    ~Tree_topo();
+    void add(DCargs_t *DCargs, int *extra);
+private:
+    std::ofstream stream;
+    std::string stats;
+    int n_extra;
 };
 
 // Get time of day
